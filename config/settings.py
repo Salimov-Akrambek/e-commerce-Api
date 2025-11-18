@@ -42,12 +42,12 @@ INSTALLED_APPS = [
     'django_filters',
 
     'base',
-    'users',
     'products',
     'cart',
     'orders',
     'payments',
 ]
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
