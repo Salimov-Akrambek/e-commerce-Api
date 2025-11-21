@@ -5,11 +5,10 @@ from rest_framework.response import Response
 from .models import Order, OrderItem
 from .serializers import OrderSerializer
 from cart.models import Cart, CartItem
-from users.permissions import IsCustomer, IsAdmin
+from base.permissions import IsCustomer
 
 
 class OrderListCreateView(APIView):
-    # Faqat customer create qiladi, admin list qiladi
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):

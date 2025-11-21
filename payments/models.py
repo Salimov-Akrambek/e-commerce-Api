@@ -1,3 +1,7 @@
+from django.db import models
+from orders.models import Order   # <-- SHU JOY ETISHMAGAN
+
+
 class Payment(models.Model):
     PAYMENT_STATUS = (
         ('pending', 'Kutilmoqda'),

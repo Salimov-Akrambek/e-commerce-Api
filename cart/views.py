@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from .models import Cart, CartItem
 from products.models import Product
 from .serializers import CartSerializer
-from users.permissions import IsCustomer
+from base.permissions import IsCustomer
 
 
 class CartView(APIView):

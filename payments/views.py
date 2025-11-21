@@ -1,3 +1,12 @@
+from rest_framework.views import APIView
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .models import Payment
+from orders.models import Order
+from .serializers import PaymentSerializer
+
+# Create Payment
 class CreatePaymentView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -5,13 +14,13 @@ class CreatePaymentView(APIView):
         order_id = request.data.get('order_id')
         method = request.data.get('method', 'card')
 
- #  o'z buyurtmasi
+        # Faqat o‘z buyurtmasi
         try:
             order = Order.objects.get(id=order_id, user=request.user)
         except Order.DoesNotExist:
             return Response({"error": "Buyurtma topilmadi"}, status=404)
 
-        # Payment 
+        # Agar allaqachon payment bo‘lsa
         if hasattr(order, 'payment'):
             return Response({"error": "Bu buyurtma uchun allaqachon to‘lov mavjud"}, status=400)
 
@@ -23,7 +32,8 @@ class CreatePaymentView(APIView):
 
         return Response(PaymentSerializer(payment).data, status=201)
 
-# tasdiqlash
+
+# Tasdiqlash
 class ConfirmPaymentView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -38,12 +48,11 @@ class ConfirmPaymentView(APIView):
 
         return Response({"message": "To‘lov tasdiqlandi!"})
 
-        
-# royxati
+
+# Foydalanuvchining barcha paymentlari
 class PaymentListView(generics.ListAPIView):
     serializer_class = PaymentSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Payment.objects.filter(order__user=self.request.user)
-
